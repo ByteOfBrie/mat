@@ -40,6 +40,9 @@
 //
 //M*/
 
+/*LUImpl was taken from OpenCV lapack.cpp and is available under the above
+  license*/
+
 #ifndef SOLVER_H
 #define SOLVER_H
 
