@@ -1,4 +1,4 @@
-#include "mat.hpp"
+#include "include/mat.hpp"
 
 /*TODO: TESTING*/
 
