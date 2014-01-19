@@ -2,34 +2,35 @@
 
 /*TODO: TESTING*/
 
+#define N (10)
+
 int main(int argc, char** argv)
 {
 	using namespace mat::impl;
-	float mat[4] = {
-	  0,1,1,0,
-	};
-	float vec[2] = {1, 2};
-	float res[2];
-//	float out[2];
-//	float matinv[4];
-//	float prod[4];
-	//id(mat, 4);
-//	inv(matinv, 2, mat);
-//	mul(prod, mat, 2, 2, matinv, 2, 2);
-	printf("mat:\n");
-	print(mat, 2, 2);
-//	printf("inv:\n");
-//	print(matinv, 2, 2);
-//	printf("prod:\n");
-//	print(prod, 2, 2);
-	printf("vec:\n");
-	print(vec, 2, 1);
-	multT(res, mat, 2, 2, vec, 2, 1);
-	printf("res:\n");
-	print(res, 2, 1);
-//	mul(out, matinv, 2, 2, res, 2, 1);
-//	printf("out:\n");
-//	print(out, 2, 1);
+	float a[N*N];
+	float b[N*N];
+	float r[N*N];
+	srand(0);
+	for(int i = 0; i < N*N; i++)
+		a[i] = (rand() % 10) / 5.f;
+	inv(b, N, a);
+	float v[N] = {1,2,3,4,5,6,7,8,9,10};
+	float q[N];
+	float o[N];
+	mul(r, a, N, N, b, N, N);
+	printf("a:\n");
+	print(a, N, N);
+	printf("b:\n");
+	print(b, N, N);	
+	printf("r:\n");
+	print(r, N, N);
+	mult(q, a, N, N, v, N, 1);
+	mult(o, b, N, N, q, N, 1);
+	printf("v:\n");
+	print(v, N, 1);
+	printf("q:\n");
+	print(q, N, 1);
+	printf("r:\n");
+	print(o, N, 1);
 	return 0;
 }
-

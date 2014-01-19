@@ -6,39 +6,56 @@
 
 //N = cx, M = cy
 
+///Note: to multiply a matrix and a vector, transpose the vector (use mult)
+
 namespace mat
 {
 	namespace impl
 	{
+		///find the inner product of two matricies (equal to tmultT)
 		template<typename _Tp>
 		_Tp* mul(_Tp* dest, const _Tp* A, size_t AN, size_t AM, const _Tp* B, size_t BN, size_t BM);
+		///find the inner product of two matricies, with A transposed
 		template<typename _Tp>
 		_Tp* tmul(_Tp* dest, const _Tp* A, size_t AN, size_t AM, const _Tp* B, size_t BN, size_t BM);
+		///find the inner product of two matricies, with B transposed
 		template<typename _Tp>
 		_Tp* mult(_Tp* dest, const _Tp* A, size_t AN, size_t AM, const _Tp* B, size_t BN, size_t BM);
+		///find the inner product of two matricies, with the result transposed (equal to tmult())
 		template<typename _Tp>
 		_Tp* mulT(_Tp* dest, const _Tp* A, size_t AN, size_t AM, const _Tp* B, size_t BN, size_t BM);
+		///find the inner product of two matricies, with the result and A transposed
 		template<typename _Tp>
 		_Tp* tmulT(_Tp* dest, const _Tp* A, size_t AN, size_t AM, const _Tp* B, size_t BN, size_t BM);
+		///find the inner product of two matricies, with the result and B transposed
 		template<typename _Tp>
 		_Tp* multT(_Tp* dest, const _Tp* A, size_t AN, size_t AM, const _Tp* B, size_t BN, size_t BM);
 		
+		///Multiply matrix by a scalar
 		template<typename _Tp>
 		_Tp* smul(_Tp* dest, size_t N, size_t M, const _Tp* src, _Tp C);
+		///component-wise add two matricies 
 		template<typename _Tp>
 		_Tp* add(_Tp* dest, size_t N, size_t M, const _Tp* A, const _Tp* B);
+		///transpose a matrix
 		template<typename _Tp>
 		_Tp* trans(_Tp* dest, size_t N, size_t M, const _Tp* src);
+		///set a matrix to identity
 		template<typename _Tp>
 		_Tp* id(_Tp* dest, size_t N);
+		///copy a matrix
 		template<typename _Tp>
 		_Tp* cpy(_Tp* dest, size_t N, size_t M, const _Tp* src);
+		///find inverse matrix
 		template<typename _Tp>
 		_Tp* inv(_Tp* dest, size_t N, const _Tp* src);
+		///find the determinant of a matrix
 		template<typename _Tp>
 		_Tp det(const _Tp* src, size_t N);
+		///utility function to print a matrix cell (debug)
 		template<typename _Tp>
 		void printt(const _Tp& f);
+		///print all of the matrtix components (debug)
 		template<typename _Tp>
 		void print(const _Tp* src, size_t N, size_t M);
 
@@ -167,7 +184,6 @@ namespace mat
 			return dest;
 		}
 
-		//NxM
 		template<typename _Tp>
 		_Tp* trans(_Tp* dest, size_t N, size_t M, const _Tp* src)
 		{
