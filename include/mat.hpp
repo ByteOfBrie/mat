@@ -33,7 +33,7 @@ namespace mat
 		
 		///Multiply matrix by a scalar
 		template<typename _Tp>
-		_Tp* smul(_Tp* dest, size_t N, size_t M, const _Tp* src, _Tp C);
+		_Tp* smul(_Tp* dest, size_t N, size_t M, const _Tp* src, const _Tp& C);
 		///component-wise add two matricies 
 		template<typename _Tp>
 		_Tp* add(_Tp* dest, size_t N, size_t M, const _Tp* A, const _Tp* B);
@@ -162,7 +162,7 @@ namespace mat
 		}
 
 		template<typename _Tp>
-		_Tp* smul(_Tp* dest, size_t N, size_t M, const _Tp* src, _Tp C)
+		_Tp* smul(_Tp* dest, size_t N, size_t M, const _Tp* src, const _Tp& C)
 		{
 			size_t x, y;
 			if(!src)
