@@ -4,13 +4,16 @@
 /*may need to replace with correct alloca header*/
 #include <alloca.h>
 
-#include <stddef.h>
-#include <stdio.h>
-
 #ifdef MAT_IMPL_USE_STD
+# include <cstddef>
+# include <cstdio>
 # include <algorithm>
 # include <limits>
 # include <cmath>
+#else
+# include <stddef.h>
+# include <stdio.h>
+# include <limits.h>
 #endif
 
 #define MAT_ALLOCA alloca
