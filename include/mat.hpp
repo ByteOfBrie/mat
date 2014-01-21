@@ -4,7 +4,7 @@
 #include "compat.hpp"
 #include "solver.hpp"
 
-//N = cx, M = cy
+///N = cx, M = cy
 
 ///Note: to multiply a matrix and a vector, transpose the vector (use mult)
 
