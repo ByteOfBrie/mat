@@ -12,26 +12,32 @@ namespace mat
 {
 	namespace impl
 	{
+		///results in BNxAM
 		///find the inner product of two matricies (equal to tmultT)
 		template<typename _Tp>
 		_Tp* mul(_Tp* dest, const _Tp* A, size_t AN, size_t AM, const _Tp* B, size_t BN, size_t BM);
+		///results in BNxAN
 		///find the inner product of two matricies, with A transposed
 		template<typename _Tp>
 		_Tp* tmul(_Tp* dest, const _Tp* A, size_t AN, size_t AM, const _Tp* B, size_t BN, size_t BM);
+		///results in BMxAM
 		///find the inner product of two matricies, with B transposed
 		template<typename _Tp>
 		_Tp* mult(_Tp* dest, const _Tp* A, size_t AN, size_t AM, const _Tp* B, size_t BN, size_t BM);
+		///results in AMxBN
 		///find the inner product of two matricies, with the result transposed (equal to tmult())
 		template<typename _Tp>
 		_Tp* mulT(_Tp* dest, const _Tp* A, size_t AN, size_t AM, const _Tp* B, size_t BN, size_t BM);
+		///results in ANxBN
 		///find the inner product of two matricies, with the result and A transposed
 		template<typename _Tp>
 		_Tp* tmulT(_Tp* dest, const _Tp* A, size_t AN, size_t AM, const _Tp* B, size_t BN, size_t BM);
+		///results in AMxBM
 		///find the inner product of two matricies, with the result and B transposed
 		template<typename _Tp>
 		_Tp* multT(_Tp* dest, const _Tp* A, size_t AN, size_t AM, const _Tp* B, size_t BN, size_t BM);
 		
-		//multiply (A)(B^-1)
+		///multiply (A)(B^-1)
 		template<typename _Tp>
 		_Tp* div(_Tp* dest, const _Tp* A, size_t AN, size_t AM, const _Tp* B, size_t B);
 		
