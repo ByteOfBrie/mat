@@ -31,6 +31,10 @@ namespace mat
 		template<typename _Tp>
 		_Tp* multT(_Tp* dest, const _Tp* A, size_t AN, size_t AM, const _Tp* B, size_t BN, size_t BM);
 		
+		//multiply (A)(B^-1)
+		template<typename _Tp>
+		_Tp* div(_Tp* dest, const _Tp* A, size_t AN, size_t AM, const _Tp* B, size_t B);
+		
 		///Multiply matrix by a scalar
 		template<typename _Tp>
 		_Tp* smul(_Tp* dest, size_t N, size_t M, const _Tp* src, const _Tp& C);
@@ -159,6 +163,13 @@ namespace mat
 					for(i = 0; i < ci; i++)
 						dest[x * cx + y] += A[y * ci + i] * B[x * ci + i];
 			return dest;
+		}
+
+		template<typename _Tp>
+		_Tp* div(_Tp* dest, const _Tp* A, size_t AN, size_t AM, const _Tp* B, size_t BN)
+		{
+			_Tp* tmp = (_Tp*)MAT_ALLOCA(sizeof(_Tp) * N * N);
+			return mul(dest, A, AN, AM, inv(tmp, BN, B), BN, BN);
 		}
 
 		template<typename _Tp>
