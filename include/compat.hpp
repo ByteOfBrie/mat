@@ -13,7 +13,7 @@
 #else
 # include <stddef.h>
 # include <stdio.h>
-# include <limits.h>
+# include <float.h>
 #endif
 
 #define MAT_ALLOCA alloca
