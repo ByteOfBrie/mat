@@ -3,6 +3,7 @@
 
 /*may need to replace with correct alloca header*/
 #include <alloca.h>
+#define MAT_ALLOCA alloca
 
 #ifdef MAT_IMPL_USE_STD
 # include <cstddef>
@@ -15,8 +16,6 @@
 # include <stdio.h>
 # include <float.h>
 #endif
-
-#define MAT_ALLOCA alloca
 
 namespace mat
 {
