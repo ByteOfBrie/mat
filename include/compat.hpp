@@ -53,9 +53,9 @@ namespace mat
 			};
 
 			template<>
-			struct numeric_limits<float>
+			struct numeric_limits<double>
 			{
-				static inline float epsilon()
+				static inline double epsilon()
 				{
 					return DBL_EPSILON;
 				}
