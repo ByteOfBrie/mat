@@ -2,6 +2,7 @@
 #define MAT_H
 
 #include <impl.hpp>
+#include <assert.h>
 
 namespace mat
 {
