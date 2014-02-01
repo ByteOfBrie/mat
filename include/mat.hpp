@@ -17,6 +17,7 @@ namespace mat
 	class mat {
 	public:
 		mat() : m_cx(0), m_cy(0), m_data(NULL) {}
+		mat(_Tp* data, const size_t& cx, const size_t& cy, const bool& transpose = false) {set(data, cx, cy, transpose);}
 		mat(const mat& m) {*this = m;}
 		~mat() {set(NULL, 0, 0,false);}
 		const size_t& cx() {return m_cx;}
@@ -123,6 +124,14 @@ namespace mat
 			m_data = new _Tp[cx * cx];
 			impl::id(m_data, cx);
 			return *this;
+		}
+		const _Tp& at(const size_t& x, const size_t& y) const
+		{
+			return m_data[y * m_cx + x];
+		}
+		_Tp& at(const size_t& x, const size_t& y)
+		{
+			return m_data[y * m_cx + x];
 		}
 	private:
 		size_t m_cx, m_cy;
