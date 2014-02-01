@@ -123,7 +123,7 @@ namespace mat
 		{
 			return m_data[y * m_cx + x];
 		}
-		_Tp& at(const size_t& x, const size_t& y)
+		inline _Tp& at(const size_t& x, const size_t& y)
 		{
 			return m_data[y * m_cx + x];
 		}
@@ -139,6 +139,14 @@ namespace mat
 		_Tp len()
 		{
 			return impl::sqrt(dot(*this));
+		}
+		inline _Tp* data()
+		{
+			return m_data;
+		}
+		inline const _Tp* data() const
+		{
+			return m_data;
 		}
 		//todo: debug output functions
 	private:
@@ -161,6 +169,12 @@ namespace mat
 		_Tp n[4] = {impl::cos(theta), -impl::sin(theta), impl::sin(theta), impl::cos(theta)};
 		t.set(n, 2, 2);
 		return t;
+	}
+	
+	template<typename _Tp>
+	void print(const mat<_Tp>& m)
+	{
+		impl::print(m.data(), m.cx(), m.cy());
 	}
 }
 
