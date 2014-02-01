@@ -1,13 +1,14 @@
 #ifndef MAT_H
 #define MAT_H
 
-#include <impl.h>
+#include <impl.hpp>
 #include <assert.h>
 
 namespace mat
 {
 	template<typename _Tp>
-	class mat {
+	class mat
+	{
 	public:
 		mat() : m_cx(0), m_cy(0), m_data(NULL) {}
 		mat(_Tp* data, const size_t& cx, const size_t& cy, const bool& transpose = false) {set(data, cx, cy, transpose);}
@@ -126,7 +127,7 @@ namespace mat
 		{
 			return m_data[y * m_cx + x];
 		}
-		_Tp dot(const mul& x)
+		_Tp dot(const mat& x)
 		{
 			assert(cx() == x.cx());
 			assert(cy() == 1 && x.cy() == 1);
@@ -139,6 +140,7 @@ namespace mat
 		{
 			return impl::sqrt(dot(*this));
 		}
+		//todo: debug output functions
 	private:
 		size_t m_cx, m_cy;
 		_Tp* m_data;
@@ -147,7 +149,7 @@ namespace mat
 	template<typename _Tp>
 	mat<_Tp> e(const size_t& x)
 	{
-		mat t;
+		mat<_Tp> t;
 		t.id(x);
 		return t;
 	}
@@ -155,7 +157,7 @@ namespace mat
 	template<typename _Tp>
 	mat<_Tp> rot(const _Tp& theta)
 	{
-		mat t;
+		mat<_Tp> t;
 		_Tp n[4] = {impl::cos(theta), -impl::sin(theta), impl::sin(theta), impl::cos(theta)};
 		t.set(n, 2, 2);
 		return t;
@@ -164,17 +166,37 @@ namespace mat
 
 //1-m
 template<typename _Tp>
-mat<_Tp>& operator-(const int& x, const mat<_Tp>& m)
+mat::mat<_Tp>& operator-(const int& x, const mat::mat<_Tp>& m)
 {
-	mat<_Tp> t;
+	mat::mat<_Tp> t;
 	return t.id() -= m;
 }
 
 //x*m
 template<typename _Tp>
-mat<_Tp> operator*(const _Tp& x, const mat<_Tp>& m)
+mat::mat<_Tp> operator*(const _Tp& x, const mat::mat<_Tp>& m)
 {
 	return m * x;
 }
+
+/*#if MAT_IMPL_USE_STD
+template<typename _Tp>
+std::ostream& operator<<(std::ostream& os, const mat::mat<_Tp>& m)
+{
+	size_t x, y;
+	for(y = 0; y < m.cy(); y++) {
+		os << "[";
+		for(x = 0; m.cx(); x++) {
+			if(x)
+				os << ", ";
+			os << m.at(x, y);
+		}
+		os << "]" << std::endl;
+	}
+	if(y == 0)
+		os << "[]" << std::endl;
+	return os;
+}
+#endif*/
 
 #endif

@@ -46,7 +46,7 @@
 #ifndef SOLVER_H
 #define SOLVER_H
 
-#include "compat.hpp"
+#include <compat.hpp>
 
 namespace mat
 {
