@@ -1,7 +1,7 @@
 #ifndef MAT_H
 #define MAT_H
 
-#include <impl.hpp>
+#include <impl.h>
 #include <assert.h>
 
 namespace mat
@@ -17,7 +17,7 @@ namespace mat
 		const size_t& cy() {return m_cy;}
 		mat& operator=(const mat& m)
 		{
-			return set(m.m_data, cx(), cy(), false);
+			return set(m.m_data, cx(), cy());
 		}
 		mat& operator+=(const mat& x)
 		{
@@ -64,7 +64,7 @@ namespace mat
 			//s must mul x
 			assert(cx() == x.cy());
 			mat t;
-			t.set(NULL, x.cx(), cy(), false)
+			t.set(NULL, x.cx(), cy());
 			impl::mul(t.m_data, m_data, cx(), cy(), x.m_data, x.cx(), x.cy());
 			return t;
 		}
@@ -75,7 +75,7 @@ namespace mat
 			assert(x.cx() == x.cy());
 			assert(cx() == x.cx());
 			mat t;
-			t.set(NULL, x.cx(), cy(), false)
+			t.set(NULL, x.cx(), cy());
 			impl::div(t.m_data, m_data, cx(), cy(), x.m_data, x.cx(), x.cy());
 			return t;
 		}
@@ -86,7 +86,7 @@ namespace mat
 			t.set(m_data, m_cx, m_cy, 1);
 			return t;
 		}
-		mat& set(const _Tp* data, const size_t& cx, const size_t& cy, const bool& transpose)
+		mat& set(const _Tp* data, const size_t& cx, const size_t& cy, const bool& transpose = false)
 		{
 			if(m_data)
 				delete[] m_data;
@@ -111,7 +111,7 @@ namespace mat
 		mat& id(const size_t& cx)
 		{
 			if(cx == 0)
-				set(NULL, 0, 0, false);
+				set(NULL, 0, 0);
 			m_cx = cx;
 			m_cy = cx;
 			m_data = new _Tp[cx * cx];
@@ -126,9 +126,22 @@ namespace mat
 		{
 			return m_data[y * m_cx + x];
 		}
+		_Tp dot(const mul& x)
+		{
+			assert(cx() == x.cx());
+			assert(cy() == 1 && x.cy() == 1);
+			_Tp s = 0;
+			for(size_t i = 0; i < cx(); i++)
+				s += m_data[i] * x.m_data[i];
+			return s;
+		}
+		_Tp len()
+		{
+			return impl::sqrt(dot(*this));
+		}
 	private:
 		size_t m_cx, m_cy;
-		float* m_data;
+		_Tp* m_data;
 	};
 	
 	template<typename _Tp>
@@ -136,6 +149,15 @@ namespace mat
 	{
 		mat t;
 		t.id(x);
+		return t;
+	}
+	
+	template<typename _Tp>
+	mat<_Tp> rot(const _Tp& theta)
+	{
+		mat t;
+		_Tp n[4] = {impl::cos(theta), -impl::sin(theta), impl::sin(theta), impl::cos(theta)};
+		t.set(n, 2, 2);
 		return t;
 	}
 }
