@@ -43,5 +43,8 @@ int main(int argc, char** argv)
 	print(q, N, 1);
 	printf("r:\n");
 	print(o, N, 1);
+	mat::mat<> t(a, N, N);
+	mat::print(t);
+	mat::print(t / t);
 	return 0;
 }

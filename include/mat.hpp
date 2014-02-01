@@ -2,20 +2,19 @@
 #define MAT_H
 
 #include <impl.hpp>
-#include <assert.h>
 
 namespace mat
 {
-	template<typename _Tp>
+	template<typename _Tp = scalar_t>
 	class mat
 	{
 	public:
-		mat() : m_cx(0), m_cy(0), data()(NULL) {}
-		mat(_Tp* data, const size_t& cx, const size_t& cy, const bool& transpose = false) {set(data, cx, cy, transpose);}
-		mat(const mat& m) {*this = m;}
+		mat() : m_cx(0), m_cy(0), m_data(NULL) {}
+		mat(_Tp* data, const size_t& cx, const size_t& cy, const bool& transpose = false) : m_cx(0), m_cy(0), m_data(NULL) {set(data, cx, cy, transpose);}
+		mat(const mat& m) : m_cx(0), m_cy(0), m_data(NULL) {*this = m;}
 		~mat() {set(NULL, 0, 0,false);}
-		const size_t& cx() {return m_cx;}
-		const size_t& cy() {return m_cy;}
+		const size_t& cx() const {return m_cx;}
+		const size_t& cy() const {return m_cy;}
 		mat& operator=(const mat& m)
 		{
 			return set(m.data(), cx(), cy());
@@ -77,7 +76,7 @@ namespace mat
 			assert(cx() == x.cx());
 			mat t;
 			t.set(NULL, x.cx(), cy());
-			impl::div(t.data(), data(), cx(), cy(), x.data(), x.cx(), x.cy());
+			impl::div(t.data(), data(), cx(), cy(), x.data(), x.cx());
 			return t;
 		}
 		//m^1;
@@ -97,7 +96,7 @@ namespace mat
 			inv(t.data(), cx(), cx(), data());
 			return t;
 		}
-		mat& set(const _Tp* data, const size_t& cx, const size_t& cy, const bool& transpose = false)
+		mat& set(const _Tp* d, const size_t& cx, const size_t& cy, const bool& transpose = false)
 		{
 			if(m_data)
 				delete[] m_data;
@@ -107,16 +106,13 @@ namespace mat
 			if(cx == 0 || cy == 0)
 				return *this;
 			m_data = new _Tp[cx * cy];
-			if(data) {
-				if(transpose) {
-					m_cx = cy;
-					m_cy = cx;
-					impl::trans(data(), cx, cy, data);
-				} else {
-					m_cx = cx;
-					m_cy = cy;
-					impl::cpy(data(), cx, cy, data);
-				}
+			m_cx = cy;
+			m_cy = cx;
+			if(d) {
+				if(transpose)
+					impl::trans(data(), cx, cy, d);
+				else
+					impl::cpy(data(), cx, cy, d);
 			}
 			return *this;
 		}
