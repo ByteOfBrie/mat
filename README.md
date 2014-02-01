@@ -1,6 +1,6 @@
 MAT
 ----
-A light-weight C++ linear algebra template library for matricies.
+A light-weight C++ linear algebra template library. Made to be compatable with the arduino.
 
 Matricies are passed as one dimensional arrays.
 
