@@ -48,6 +48,9 @@ namespace mat
 		///component-wise add two matricies 
 		template<typename _Tp>
 		_Tp* add(_Tp* dest, size_t N, size_t M, const _Tp* A, const _Tp* B);
+		///component-wise subtract two matricies 
+		template<typename _Tp>
+		_Tp* sub(_Tp* dest, size_t N, size_t M, const _Tp* A, const _Tp* B);
 		///transpose a matrix
 		template<typename _Tp>
 		_Tp* trans(_Tp* dest, size_t N, size_t M, const _Tp* src);
@@ -199,6 +202,16 @@ namespace mat
 				return NULL;
 			for(i = 0; i < M*N; i++)
 				dest[i] = A[i] + B[i];
+			return dest;
+		}
+
+		_Tp* sub(_Tp* dest, size_t N, size_t M, const _Tp* A, const _Tp* B)
+		{
+			size_t i;
+			if(!A || !B)
+				return NULL;
+			for(i = 0; i < M*N; i++)
+				dest[i] = A[i] - B[i];
 			return dest;
 		}
 
