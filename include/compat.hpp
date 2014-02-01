@@ -4,18 +4,24 @@
 /*may need to replace with correct alloca header*/
 #include <alloca.h>
 #define MAT_ALLOCA alloca
+//#define MAT_IMPL_USE_STD // for platforms without stl
+//#define MAT_IPML_NO_MATH // for platforms without math.h
 
 #ifdef MAT_IMPL_USE_STD
 # include <cstddef>
 # include <cstdio>
 # include <algorithm>
 # include <limits>
-# include <cmath>
+# ifndef MAT_IMPL_NO_MATH
+#  include <cmath>
+# endif
 #else
 # include <stddef.h>
 # include <stdio.h>
 # include <float.h>
-# include <math.h>
+# ifndef MAT_IMPL_NO_MATH
+#  include <math.h>
+# endif
 #endif
 
 namespace mat
@@ -26,6 +32,7 @@ namespace mat
 	inline _Tp sin(const _Tp& x);
 	template<typename _Tp>
 	inline _Tp cos(const _Tp& x);
+
 	namespace impl
 	{
 #ifdef MAT_IMPL_USE_STD
@@ -85,6 +92,26 @@ namespace mat
 		{
 			printf(str);
 		}
+
+#ifndef MAT_IMPL_NO_MATH		
+		template<typename _Tp>
+		inline _Tp sqrt(const _Tp& x)
+		{
+			return ::sqrt(x);
+		}
+
+		template<typename _Tp>
+		inline _Tp sin(const _Tp& x)
+		{
+			return ::sin(x);
+		}
+
+		template<typename _Tp>
+		inline _Tp cos(const _Tp& x)
+		{
+			return ::cos(x);
+		}
+#endif
 	}
 }
 
