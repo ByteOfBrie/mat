@@ -15,6 +15,7 @@
 # include <stddef.h>
 # include <stdio.h>
 # include <float.h>
+# include <math.h>
 #endif
 
 namespace mat
@@ -77,6 +78,21 @@ namespace mat
 		inline void print(const char* str)
 		{
 			printf(str);
+		}
+		template<typename _Tp>
+		inline _Tp sqrt(const _Tp& x)
+		{
+			return ::sqrt(x);
+		}
+		template<typename _Tp>
+		inline _Tp sin(const _Tp& x)
+		{
+			return ::sin(x);
+		}
+		template<typename _Tp>
+		inline _Tp cos(const _Tp& x)
+		{
+			return ::cos(x);
 		}
 	}
 }
