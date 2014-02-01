@@ -10,7 +10,7 @@ namespace mat
 	class mat
 	{
 	public:
-		mat() : m_cx(0), m_cy(0), m_data(NULL) {}
+		mat() : m_cx(0), m_cy(0), data()(NULL) {}
 		mat(_Tp* data, const size_t& cx, const size_t& cy, const bool& transpose = false) {set(data, cx, cy, transpose);}
 		mat(const mat& m) {*this = m;}
 		~mat() {set(NULL, 0, 0,false);}
@@ -18,18 +18,18 @@ namespace mat
 		const size_t& cy() {return m_cy;}
 		mat& operator=(const mat& m)
 		{
-			return set(m.m_data, cx(), cy());
+			return set(m.data(), cx(), cy());
 		}
 		mat& operator+=(const mat& x)
 		{
 			assert(cx() == x.cx() && cy() == x.cy());
-			impl::add(m_data, m_cx, m_cy, m_data, x.m_data);
+			impl::add(data(), m_cx, m_cy, data(), x.data());
 			return *this;
 		}
 		mat& operator-=(const mat& x)
 		{
 			assert(cx() == x.cx() && cy() == x.cy());
-			impl::sub(m_data, m_cx, m_cy, m_data, x.m_data);
+			impl::sub(data(), m_cx, m_cy, data(), x.data());
 			return *this;
 		}
 		//m+m;
@@ -56,7 +56,7 @@ namespace mat
 		//m*=x
 		mat& operator*=(const _Tp& x)
 		{
-			impl::smul(m_data, m_cx, m_cy, m_data, x);
+			impl::smul(data(), m_cx, m_cy, data(), x);
 			return *this;
 		}
 		//m*m;
@@ -66,7 +66,7 @@ namespace mat
 			assert(cx() == x.cy());
 			mat t;
 			t.set(NULL, x.cx(), cy());
-			impl::mul(t.m_data, m_data, cx(), cy(), x.m_data, x.cx(), x.cy());
+			impl::mul(t.data(), data(), cx(), cy(), x.data(), x.cx(), x.cy());
 			return t;
 		}
 		//m/m;
@@ -77,14 +77,24 @@ namespace mat
 			assert(cx() == x.cx());
 			mat t;
 			t.set(NULL, x.cx(), cy());
-			impl::div(t.m_data, m_data, cx(), cy(), x.m_data, x.cx(), x.cy());
+			impl::div(t.data(), data(), cx(), cy(), x.data(), x.cx(), x.cy());
 			return t;
 		}
 		//m^1;
 		mat operator^(const int& dummy)
 		{
 			mat t;
-			t.set(m_data, m_cx, m_cy, 1);
+			t.set(data(), m_cx, m_cy, true);
+			return t;
+		}
+		//invert
+		mat operator!()
+		{
+			//x must be square
+			assert(cx() == cy());
+			mat t;
+			t.set(NULL, cx(), cx());
+			inv(t.data(), cx(), cx(), data());
 			return t;
 		}
 		mat& set(const _Tp* data, const size_t& cx, const size_t& cy, const bool& transpose = false)
@@ -93,6 +103,7 @@ namespace mat
 				delete[] m_data;
 			m_cx = 0;
 			m_cy = 0;
+			m_data = NULL;
 			if(cx == 0 || cy == 0)
 				return *this;
 			m_data = new _Tp[cx * cy];
@@ -100,11 +111,11 @@ namespace mat
 				if(transpose) {
 					m_cx = cy;
 					m_cy = cx;
-					impl::trans(m_data, cx, cy, data);
+					impl::trans(data(), cx, cy, data);
 				} else {
 					m_cx = cx;
 					m_cy = cy;
-					impl::cpy(m_data, cx, cy, data);
+					impl::cpy(data(), cx, cy, data);
 				}
 			}
 			return *this;
@@ -116,7 +127,7 @@ namespace mat
 			m_cx = cx;
 			m_cy = cx;
 			m_data = new _Tp[cx * cx];
-			impl::id(m_data, cx);
+			impl::id(data(), cx);
 			return *this;
 		}
 		const _Tp& at(const size_t& x, const size_t& y) const
