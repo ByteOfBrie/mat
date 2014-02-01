@@ -293,6 +293,8 @@ namespace mat
 				}
 				mat::impl::print("]\n");
 			}
+			if(y == 0)
+				mat::impl::print("[]\n");
 		}
 	}
 }
