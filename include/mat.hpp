@@ -6,14 +6,6 @@
 namespace mat
 {
 	template<typename _Tp>
-	mat<_Tp> e(const size_t& x)
-	{
-		mat t;
-		t.id(x);
-		return t;
-	}
-
-	template<typename _Tp>
 	class mat {
 	public:
 		mat() : m_cx(0), m_cy(0), m_data(NULL) {}
@@ -137,6 +129,14 @@ namespace mat
 		size_t m_cx, m_cy;
 		float* m_data;
 	};
+	
+	template<typename _Tp>
+	mat<_Tp> e(const size_t& x)
+	{
+		mat t;
+		t.id(x);
+		return t;
+	}
 }
 
 //1-m
