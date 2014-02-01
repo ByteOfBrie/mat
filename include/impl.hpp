@@ -1,8 +1,8 @@
 #ifndef MAT_UTIL_H
 #define MAT_UTIL_H
 
-#include "compat.hpp"
-#include "solver.hpp"
+#include <compat.hpp>
+#include <solver.hpp>
 
 ///N = cx, M = cy
 
@@ -205,6 +205,7 @@ namespace mat
 			return dest;
 		}
 
+		template<typename _Tp>
 		_Tp* sub(_Tp* dest, size_t N, size_t M, const _Tp* A, const _Tp* B)
 		{
 			size_t i;
