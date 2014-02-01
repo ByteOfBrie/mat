@@ -21,17 +21,11 @@
 namespace mat
 {
 	template<typename _Tp>
-	inline _Tp pi();
-	template<typename _Tp>
 	inline _Tp sqrt(const _Tp& x);
 	template<typename _Tp>
 	inline _Tp sin(const _Tp& x);
 	template<typename _Tp>
 	inline _Tp cos(const _Tp& x);
-	template<typename _Tp>
-	inline _Tp deg(const _Tp& x);
-	template<typename _Tp>
-	inline _Tp rad(const _Tp& x);
 	namespace impl
 	{
 #ifdef MAT_IMPL_USE_STD
