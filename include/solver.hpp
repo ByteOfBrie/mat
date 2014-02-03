@@ -55,62 +55,58 @@ namespace mat
 		template<typename _Tp> int
 		LUImpl(_Tp* A, size_t astep, int m, _Tp* b, size_t bstep, int n)
 		{
-		    int i, j, k, p = 1;
-		    astep /= sizeof(A[0]);
-		    bstep /= sizeof(b[0]);
+			int i, j, k, p = 1;
+			astep /= sizeof(A[0]);
+			bstep /= sizeof(b[0]);
 
-		    for( i = 0; i < m; i++ )
-		    {
-			k = i;
+			for( i = 0; i < m; i++ ) {
+				k = i;
 
-			for( j = i+1; j < m; j++ )
-			    if( mat::impl::compat::abs(A[j*astep + i]) > mat::impl::compat::abs(A[k*astep + i]) )
-				k = j;
+				for( j = i+1; j < m; j++ )
+					if( mat::impl::compat::abs(A[j*astep + i]) > mat::impl::compat::abs(A[k*astep + i]) )
+						k = j;
 
-			if( mat::impl::compat::abs(A[k*astep + i]) < mat::impl::compat::numeric_limits<_Tp>::epsilon() )
-			    return 0;
+				if( mat::impl::compat::abs(A[k*astep + i]) < mat::impl::compat::numeric_limits<_Tp>::epsilon() )
+					return 0;
 
-			if( k != i )
-			{
-			    for( j = i; j < m; j++ )
-				mat::impl::compat::swap(A[i*astep + j], A[k*astep + j]);
-			    if( b )
-				for( j = 0; j < n; j++ )
-				    mat::impl::compat::swap(b[i*bstep + j], b[k*bstep + j]);
-			    p = -p;
+				if( k != i ) {
+					for( j = i; j < m; j++ )
+						mat::impl::compat::swap(A[i*astep + j], A[k*astep + j]);
+					if( b )
+						for( j = 0; j < n; j++ )
+							mat::impl::compat::swap(b[i*bstep + j], b[k*bstep + j]);
+					p = -p;
+				}
+
+				_Tp d = -1/A[i*astep + i];
+
+				for( j = i+1; j < m; j++ ) {
+					_Tp alpha = A[j*astep + i]*d;
+
+					for( k = i+1; k < m; k++ )
+						A[j*astep + k] += alpha*A[i*astep + k];
+
+					if( b )
+						for( k = 0; k < n; k++ )
+							b[j*bstep + k] += alpha*b[i*bstep + k];
+				}
+
+				A[i*astep + i] = -d;
 			}
 
-			_Tp d = -1/A[i*astep + i];
-
-			for( j = i+1; j < m; j++ )
-			{
-			    _Tp alpha = A[j*astep + i]*d;
-
-			    for( k = i+1; k < m; k++ )
-				A[j*astep + k] += alpha*A[i*astep + k];
-
-			    if( b )
-				for( k = 0; k < n; k++ )
-				    b[j*bstep + k] += alpha*b[i*bstep + k];
+			if( b ) {
+				for( i = m-1; i >= 0; i-- )
+			    		for( j = 0; j < n; j++ ) {
+						_Tp s = b[i*bstep + j];
+						for( k = i+1; k < m; k++ )
+							s -= A[i*astep + k]*b[k*bstep + j];
+						b[i*bstep + j] = s*A[i*astep + i];
+			    		}
 			}
 
-			A[i*astep + i] = -d;
-		    }
-
-		    if( b )
-		    {
-			for( i = m-1; i >= 0; i-- )
-			    for( j = 0; j < n; j++ )
-			    {
-				_Tp s = b[i*bstep + j];
-				for( k = i+1; k < m; k++ )
-				    s -= A[i*astep + k]*b[k*bstep + j];
-				b[i*bstep + j] = s*A[i*astep + i];
-			    }
-		    }
-
-		    return p;
+			return p;
 		}
+
 		template<typename _Tp> bool
 		CholImpl(_Tp* A, size_t astep, int m, _Tp* b, size_t bstep, int n)
 		{
@@ -120,18 +116,15 @@ namespace mat
 			astep /= sizeof(A[0]);
 			bstep /= sizeof(b[0]);
 			
-			for( i = 0; i < m; i++ )
-			{
-				for( j = 0; j < i; j++ )
-				{
+			for( i = 0; i < m; i++ ) {
+				for( j = 0; j < i; j++ ) {
 					s = A[i*astep + j];
 					for( k = 0; k < j; k++ )
 						s -= L[i*astep + k]*L[j*astep + k];
 					L[i*astep + j] = (_Tp)(s*L[j*astep + j]);
 				}
 				s = A[i*astep + i];
-				for( k = 0; k < j; k++ )
-				{
+				for( k = 0; k < j; k++ ) {
 					double t = L[i*astep + k];
 					s -= t*t;
 				}
@@ -159,10 +152,8 @@ namespace mat
 			[             L33 ]  x3   y3
 			*/
 			
-			for( i = 0; i < m; i++ )
-			{
-				for( j = 0; j < n; j++ )
-				{
+			for( i = 0; i < m; i++ ) {
+				for( j = 0; j < n; j++ ) {
 					s = b[i*bstep + j];
 					for( k = 0; k < i; k++ )
 						s -= L[i*astep + k]*b[k*bstep + j];
@@ -170,10 +161,8 @@ namespace mat
 				}
 			}
 			
-			for( i = m-1; i >= 0; i-- )
-			{
-				for( j = 0; j < n; j++ )
-				{
+			for( i = m-1; i >= 0; i-- ) {
+				for( j = 0; j < n; j++ ) {
 					s = b[i*bstep + j];
 					for( k = m-1; k > i; k-- )
 						s -= L[k*astep + i]*b[k*bstep + j];
