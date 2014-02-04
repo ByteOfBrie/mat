@@ -162,7 +162,7 @@ namespace mat
 	};
 	
 	template<typename _Tp>
-	mat<_Tp> e(const size_t& x) const
+	mat<_Tp> e(const size_t& x)
 	{
 		mat<_Tp> t;
 		t.id(x);
@@ -170,7 +170,7 @@ namespace mat
 	}
 	
 	template<typename _Tp>
-	mat<_Tp> rot(const _Tp& theta) const
+	mat<_Tp> rot(const _Tp& theta)
 	{
 		mat<_Tp> t;
 		_Tp n[4] = {impl::cos(theta), -impl::sin(theta), impl::sin(theta), impl::cos(theta)};
@@ -190,7 +190,8 @@ template<typename _Tp>
 mat::mat<_Tp>& operator-(const int& x, const mat::mat<_Tp>& m)
 {
 	mat::mat<_Tp> t;
-	return t.id() -= m;
+	t.id() -= m;
+	return t;
 }
 
 //x*m
