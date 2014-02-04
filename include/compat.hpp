@@ -52,7 +52,7 @@ namespace mat
 			template<typename _Tp>
 			_Tp abs(const _Tp& x)
 			{
-				if(x > 0)
+				if (x > 0)
 					return x;
 				else
 					return -x;
@@ -61,8 +61,8 @@ namespace mat
 			void swap(T& a, T& b)
 			{
 				T c(a);
-				a=b;
-				b=c;
+				a = b;
+				b = c;
 			}
 			template<typename _Tp>
 			struct numeric_limits;
