@@ -77,15 +77,15 @@ namespace mat
 		_Tp* mul(_Tp* dest, const _Tp* A, size_t ci, size_t cy, const _Tp* B, size_t cx, size_t BM)
 		{
 			size_t x, y, i;
-			if(ci != BM)
+			if (ci != BM)
 				return NULL;
-			if(!A || !B)
+			if (!A || !B)
 				return NULL;
-			for(i = 0; i < cx*cy; i++)
+			for (i = 0; i < cx*cy; i++)
 				dest[i] = 0;
-			for(y = 0; y < cy; y++)
-				for(x = 0; x < cx; x++)
-					for(i = 0; i < ci; i++)
+			for (y = 0; y < cy; y++)
+				for (x = 0; x < cx; x++)
+					for (i = 0; i < ci; i++)
 						dest[y * cx + x] += A[y * ci + i] * B[i * ci + x];
 			return dest;
 		}
@@ -94,15 +94,15 @@ namespace mat
 		_Tp* tmul(_Tp* dest, const _Tp* A, size_t cy, size_t ci, const _Tp* B, size_t cx, size_t BM)
 		{
 			size_t x, y, i;
-			if(ci != BM)
+			if (ci != BM)
 				return NULL;
-			if(!A || !B)
+			if (!A || !B)
 				return NULL;
-			for(i = 0; i < cx*cy; i++)
+			for (i = 0; i < cx*cy; i++)
 				dest[i] = 0;
-			for(y = 0; y < cy; y++)
-				for(x = 0; x < cx; x++)
-					for(i = 0; i < ci; i++)
+			for (y = 0; y < cy; y++)
+				for (x = 0; x < cx; x++)
+					for (i = 0; i < ci; i++)
 						dest[y * cx + x] += A[i * ci + y] * B[i * ci + x];
 			return dest;
 		}
@@ -111,15 +111,15 @@ namespace mat
 		_Tp* mult(_Tp* dest, const _Tp* A, size_t ci, size_t cy, const _Tp* B, size_t BN, size_t cx)
 		{
 			size_t x, y, i;
-			if(ci != BN)
+			if (ci != BN)
 				return NULL;
-			if(!A || !B)
+			if (!A || !B)
 				return NULL;
-			for(i = 0; i < cx*cy; i++)
+			for (i = 0; i < cx*cy; i++)
 				dest[i] = 0;
-			for(y = 0; y < cy; y++)
-				for(x = 0; x < cx; x++)
-					for(i = 0; i < ci; i++)
+			for (y = 0; y < cy; y++)
+				for (x = 0; x < cx; x++)
+					for (i = 0; i < ci; i++)
 						dest[y * cx + x] += A[y * ci + i] * B[x * ci + i];
 			return dest;
 		}
@@ -128,15 +128,15 @@ namespace mat
 		_Tp* mulT(_Tp* dest, const _Tp* A, size_t ci, size_t cy, const _Tp* B, size_t cx, size_t BM)
 		{
 			size_t x, y, i;
-			if(ci != BM)
+			if (ci != BM)
 				return NULL;
-			if(!A || !B)
+			if (!A || !B)
 				return NULL;
-			for(i = 0; i < cx*cy; i++)
+			for (i = 0; i < cx*cy; i++)
 				dest[i] = 0;
-			for(x = 0; x < cx; x++)
-				for(y = 0; y < cy; y++)
-					for(i = 0; i < ci; i++)
+			for (x = 0; x < cx; x++)
+				for (y = 0; y < cy; y++)
+					for (i = 0; i < ci; i++)
 						dest[x * cx + y] += A[y * ci + i] * B[i * ci + x];
 			return dest;
 		}
@@ -145,15 +145,15 @@ namespace mat
 		_Tp* tmulT(_Tp* dest, const _Tp* A, size_t cy, size_t ci, const _Tp* B, size_t cx, size_t BM)
 		{
 			size_t x, y, i;
-			if(ci != BM)
+			if (ci != BM)
 				return NULL;
-			if(!A || !B)
+			if (!A || !B)
 				return NULL;
-			for(i = 0; i < cx*cy; i++)
+			for (i = 0; i < cx*cy; i++)
 				dest[i] = 0;
-			for(x = 0; x < cx; x++)
-				for(y = 0; y < cy; y++)
-					for(i = 0; i < ci; i++)
+			for (x = 0; x < cx; x++)
+				for (y = 0; y < cy; y++)
+					for (i = 0; i < ci; i++)
 						dest[x * cx + y] += A[i * ci + y] * B[i * ci + x];
 			return dest;
 		}
@@ -162,15 +162,15 @@ namespace mat
 		_Tp* multT(_Tp* dest, const _Tp* A, size_t ci, size_t cy, const _Tp* B, size_t BN, size_t cx)
 		{
 			size_t x, y, i;
-			if(ci != BN)
+			if (ci != BN)
 				return NULL;
-			if(!A || !B)
+			if (!A || !B)
 				return NULL;
-			for(i = 0; i < cx*cy; i++)
+			for (i = 0; i < cx*cy; i++)
 				dest[i] = 0;
-			for(x = 0; x < cx; x++)
-				for(y = 0; y < cy; y++)
-					for(i = 0; i < ci; i++)
+			for (x = 0; x < cx; x++)
+				for (y = 0; y < cy; y++)
+					for (i = 0; i < ci; i++)
 						dest[x * cx + y] += A[y * ci + i] * B[x * ci + i];
 			return dest;
 		}
@@ -186,10 +186,10 @@ namespace mat
 		_Tp* smul(_Tp* dest, size_t N, size_t M, const _Tp* src, const _Tp& C)
 		{
 			size_t x, y;
-			if(!src)
+			if (!src)
 				return NULL;
-			for(y = 0; y < M; y++)
-				for(x = 0; x < N; x++)
+			for (y = 0; y < M; y++)
+				for (x = 0; x < N; x++)
 					dest[y * N + x] = src[y * N + x] * C;
 			return dest;
 		}
@@ -198,9 +198,9 @@ namespace mat
 		_Tp* add(_Tp* dest, size_t N, size_t M, const _Tp* A, const _Tp* B)
 		{
 			size_t i;
-			if(!A || !B)
+			if (!A || !B)
 				return NULL;
-			for(i = 0; i < M*N; i++)
+			for (i = 0; i < M*N; i++)
 				dest[i] = A[i] + B[i];
 			return dest;
 		}
@@ -209,9 +209,9 @@ namespace mat
 		_Tp* sub(_Tp* dest, size_t N, size_t M, const _Tp* A, const _Tp* B)
 		{
 			size_t i;
-			if(!A || !B)
+			if (!A || !B)
 				return NULL;
-			for(i = 0; i < M*N; i++)
+			for (i = 0; i < M*N; i++)
 				dest[i] = A[i] - B[i];
 			return dest;
 		}
@@ -220,10 +220,10 @@ namespace mat
 		_Tp* trans(_Tp* dest, size_t N, size_t M, const _Tp* src)
 		{
 			size_t x, y;
-			if(!src)
+			if (!src)
 				return NULL;
-			for(y = 0; y < M; y++)
-				for(x = 0; x < N; x++)
+			for (y = 0; y < M; y++)
+				for (x = 0; x < N; x++)
 					dest[x * M + y] = src[y * N + x];
 			return dest;
 		}
@@ -232,9 +232,9 @@ namespace mat
 		_Tp* id(_Tp* dest, size_t N)
 		{
 			size_t x, y;
-			for(y = 0; y < N; y++)
-				for(x = 0; x < N; x++)
-					if(x == y)
+			for (y = 0; y < N; y++)
+				for (x = 0; x < N; x++)
+					if (x == y)
 						dest[y * N + x] = 1;
 					else
 						dest[y * N + x] = 0;
@@ -245,9 +245,9 @@ namespace mat
 		_Tp* cpy(_Tp* dest, size_t N, size_t M, const _Tp* src)
 		{
 			size_t i;
-			if(!src)
+			if (!src)
 				return NULL;
-			for(i = 0; i < N*M; i++)
+			for (i = 0; i < N*M; i++)
 				dest[i] = src[i];
 			return dest;
 		}
@@ -256,11 +256,11 @@ namespace mat
 		_Tp* inv(_Tp* dest, size_t N, const _Tp* src)
 		{
 			_Tp* tmp = (_Tp*)MAT_ALLOCA(sizeof(_Tp) * N * N);
-			if(!src)
+			if (!src)
 				return NULL;
 			id(dest, N);
 			cpy(tmp, N, N, src);
-			if(!LUImpl(tmp, N * sizeof(_Tp), N, dest, N * sizeof(_Tp), N))
+			if (!LUImpl(tmp, N * sizeof(_Tp), N, dest, N * sizeof(_Tp), N))
 				return NULL;
 			return dest;
 		}
@@ -273,9 +273,9 @@ namespace mat
 			_Tp* tmp = (_Tp*)MAT_ALLOCA(sizeof(_Tp) * N * N);
 			cpy(tmp, N, N, src);
 			det = mat::impl::LUImpl(tmp, N * sizeof(_Tp), N, (_Tp*)NULL, 0, 0);
-			for(i = 0; i < N; i++)
+			for (i = 0; i < N; i++)
 				det *= tmp[i * N + i];
-			if(det)
+			if (det)
 				det = 1. / det;
 			return det;
 		}
@@ -284,16 +284,16 @@ namespace mat
 		void print(const _Tp* src, size_t N, size_t M)
 		{
 			size_t x, y;
-			for(y = 0; y < M; y++) {
+			for (y = 0; y < M; y++) {
 				mat::impl::print("[");
-				for(x = 0; x < N; x++) {
-					if(x)
+				for (x = 0; x < N; x++) {
+					if (x)
 						mat::impl::print(", ");
 					mat::impl::printt(src[y * N + x]);
 				}
 				mat::impl::print("]\n");
 			}
-			if(y == 0)
+			if (y == 0)
 				mat::impl::print("[]\n");
 		}
 	}
