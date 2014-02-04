@@ -126,7 +126,7 @@ namespace mat
 			impl::id(data(), cx);
 			return *this;
 		}
-		const _Tp& at(const size_t& x, const size_t& y) const
+		inline const _Tp& at(const size_t& x, const size_t& y) const
 		{
 			return m_data[y * m_cx + x];
 		}
