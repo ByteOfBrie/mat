@@ -39,14 +39,14 @@ namespace mat
 			return t;
 		}
 		//m-m;
-		mat operator-(const mat& x)
+		mat operator-(const mat& x) const
 		{
 			mat t(x);
 			t -= *this;
 			return t;
 		}
 		//m*x
-		mat operator*(const _Tp& x)
+		mat operator*(const _Tp& x) const
 		{
 			mat t(*this);
 			t *= x;
@@ -59,7 +59,7 @@ namespace mat
 			return *this;
 		}
 		//m*m;
-		mat operator*(const mat& x)
+		mat operator*(const mat& x) const
 		{
 			//s must mul x
 			assert(cx() == x.cy());
@@ -69,7 +69,7 @@ namespace mat
 			return t;
 		}
 		//m/m;
-		mat operator/(const mat& x)
+		mat operator/(const mat& x) const
 		{
 			//x must be square
 			assert(x.cx() == x.cy());
@@ -80,14 +80,14 @@ namespace mat
 			return t;
 		}
 		//m^1;
-		mat operator^(const int& dummy)
+		mat operator^(const int& dummy) const
 		{
 			mat t;
 			t.set(data(), m_cx, m_cy, true);
 			return t;
 		}
 		//invert
-		mat operator!()
+		mat operator!() const
 		{
 			//x must be square
 			assert(cx() == cy());
@@ -162,7 +162,7 @@ namespace mat
 	};
 	
 	template<typename _Tp>
-	mat<_Tp> e(const size_t& x)
+	mat<_Tp> e(const size_t& x) const
 	{
 		mat<_Tp> t;
 		t.id(x);
@@ -170,7 +170,7 @@ namespace mat
 	}
 	
 	template<typename _Tp>
-	mat<_Tp> rot(const _Tp& theta)
+	mat<_Tp> rot(const _Tp& theta) const
 	{
 		mat<_Tp> t;
 		_Tp n[4] = {impl::cos(theta), -impl::sin(theta), impl::sin(theta), impl::cos(theta)};
