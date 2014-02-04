@@ -98,18 +98,18 @@ namespace mat
 		}
 		mat& set(const _Tp* d, const size_t& cx, const size_t& cy, const bool& transpose = false)
 		{
-			if(m_data)
+			if (m_data)
 				delete[] m_data;
 			m_cx = 0;
 			m_cy = 0;
 			m_data = NULL;
-			if(cx == 0 || cy == 0)
+			if (cx == 0 || cy == 0)
 				return *this;
 			m_data = new _Tp[cx * cy];
 			m_cx = cy;
 			m_cy = cx;
-			if(d) {
-				if(transpose)
+			if (d) {
+				if (transpose)
 					impl::trans(data(), cx, cy, d);
 				else
 					impl::cpy(data(), cx, cy, d);
@@ -118,7 +118,7 @@ namespace mat
 		}
 		mat& id(const size_t& cx)
 		{
-			if(cx == 0)
+			if (cx == 0)
 				set(NULL, 0, 0);
 			m_cx = cx;
 			m_cy = cx;
@@ -139,7 +139,7 @@ namespace mat
 			assert(cx() == x.cx());
 			assert(cy() == 1 && x.cy() == 1);
 			_Tp s = 0;
-			for(size_t i = 0; i < cx(); i++)
+			for (size_t i = 0; i < cx(); i++)
 				s += m_data[i] * x.m_data[i];
 			return s;
 		}
@@ -200,25 +200,5 @@ mat::mat<_Tp> operator*(const _Tp& x, const mat::mat<_Tp>& m)
 {
 	return m * x;
 }
-
-/*#if MAT_IMPL_USE_STD
-template<typename _Tp>
-std::ostream& operator<<(std::ostream& os, const mat::mat<_Tp>& m)
-{
-	size_t x, y;
-	for(y = 0; y < m.cy(); y++) {
-		os << "[";
-		for(x = 0; m.cx(); x++) {
-			if(x)
-				os << ", ";
-			os << m.at(x, y);
-		}
-		os << "]" << std::endl;
-	}
-	if(y == 0)
-		os << "[]" << std::endl;
-	return os;
-}
-#endif*/
 
 #endif
