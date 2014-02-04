@@ -39,14 +39,14 @@ namespace mat
 			return t;
 		}
 		//m-m;
-		mat operator-(const mat& x)
+		mat operator-(const mat& x) const
 		{
 			mat t(x);
 			t -= *this;
 			return t;
 		}
 		//m*x
-		mat operator*(const _Tp& x)
+		mat operator*(const _Tp& x) const
 		{
 			mat t(*this);
 			t *= x;
@@ -59,7 +59,7 @@ namespace mat
 			return *this;
 		}
 		//m*m;
-		mat operator*(const mat& x)
+		mat operator*(const mat& x) const
 		{
 			//s must mul x
 			assert(cx() == x.cy());
@@ -69,7 +69,7 @@ namespace mat
 			return t;
 		}
 		//m/m;
-		mat operator/(const mat& x)
+		mat operator/(const mat& x) const
 		{
 			//x must be square
 			assert(x.cx() == x.cy());
@@ -80,14 +80,14 @@ namespace mat
 			return t;
 		}
 		//m^1;
-		mat operator^(const int& dummy)
+		mat operator^(const int& dummy) const
 		{
 			mat t;
 			t.set(data(), m_cx, m_cy, true);
 			return t;
 		}
 		//invert
-		mat operator!()
+		mat operator!() const
 		{
 			//x must be square
 			assert(cx() == cy());
@@ -190,7 +190,8 @@ template<typename _Tp>
 mat::mat<_Tp>& operator-(const int& x, const mat::mat<_Tp>& m)
 {
 	mat::mat<_Tp> t;
-	return t.id() -= m;
+	t.id() -= m;
+	return t;
 }
 
 //x*m
