@@ -23,13 +23,13 @@ namespace mat
 	}
 
 	template<typename _Tp>
-	inline _Tp deg(const _Tp& x)
+	inline _Tp todeg(const _Tp& x)
 	{
-  		return x * pi<_Tp>() / ((_Tp)180.);
+  		return x / pi<_Tp>() * ((_Tp)180.);
 	}
 
 	template<typename _Tp>
-	inline _Tp rad(const _Tp& x)
+	inline _Tp torad(const _Tp& x)
 	{
 	  	return x / ((_Tp)180.) * pi<_Tp>();
 	}

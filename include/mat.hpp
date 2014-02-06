@@ -1,6 +1,7 @@
 #ifndef MAT_H
 #define MAT_H
 
+#include <iostream>
 #include <impl.hpp>
 
 namespace mat
@@ -17,7 +18,7 @@ namespace mat
 		const size_t& cy() const {return m_cy;}
 		mat& operator=(const mat& m)
 		{
-			return set(m.data(), cx(), cy());
+			return set(m.data(), m.cx(), m.cy());
 		}
 		mat& operator+=(const mat& x)
 		{
@@ -27,7 +28,7 @@ namespace mat
 		}
 		mat& operator-=(const mat& x)
 		{
-			assert(cx() == x.cx() && cy() == x.cy());
+			//assert(cx() == x.cx() && cy() == x.cy());
 			impl::sub(data(), m_cx, m_cy, data(), x.data());
 			return *this;
 		}
@@ -105,13 +106,16 @@ namespace mat
 			m_data = NULL;
 			if (cx == 0 || cy == 0)
 				return *this;
-			m_data = new _Tp[cx * cy];
-			m_cx = cy;
-			m_cy = cx;
-			if (d) {
-				if (transpose)
+			m_data = new _Tp[cx * cy]();
+			if (transpose) {
+				m_cx = cy;
+				m_cy = cx;
+				if (d)
 					impl::trans(data(), cx, cy, d);
-				else
+			} else {
+				m_cx = cx;
+				m_cy = cy;
+				if (d)
 					impl::cpy(data(), cx, cy, d);
 			}
 			return *this;
@@ -134,7 +138,7 @@ namespace mat
 		{
 			return m_data[y * m_cx + x];
 		}
-		_Tp dot(const mat& x)
+		_Tp dot(const mat& x) const
 		{
 			assert(cx() == x.cx());
 			assert(cy() == 1 && x.cy() == 1);
@@ -143,9 +147,20 @@ namespace mat
 				s += m_data[i] * x.m_data[i];
 			return s;
 		}
-		_Tp len()
+		_Tp len() const
 		{
+			assert(cy() == 1);
 			return impl::sqrt(dot(*this));
+		}
+		mat normal() const
+		{
+			mat t(*this);
+			t *= 1. / t.len();
+			return t;
+		}
+		mat& normalize()
+		{
+			return *this *= 1. / len();
 		}
 		inline _Tp* data()
 		{
