@@ -4,6 +4,8 @@ A light-weight C++ linear algebra template library. Made to be compatable with t
 
 Matricies are passed as one dimensional arrays.
 
+Edit config.hpp to match your platform.
+
 Example:
 
 	float matid[9] = {
@@ -26,3 +28,5 @@ Add more comments [ 4/10 ]
 Describe the way a matrix is used [ 1/10 ]
 
 Transposed multiply [ 3/10 ]
+
+Template arguments to replace config.hpp [ 0/10 ]
