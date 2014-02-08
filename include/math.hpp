@@ -3,36 +3,30 @@
 
 namespace mat
 {
-	template<typename _Tp>
-	inline _Tp pi();
-	template<typename _Tp>
-	inline _Tp deg(const _Tp& x);
-	template<typename _Tp>
-	inline _Tp rad(const _Tp& x);
-	
-	template<>
-	inline float pi<float>()
+	class mathutils
 	{
-		return 3.1415926535897932384626433832795;
-	}
-
-	template<>
-	inline double pi<double>()
-	{
-		return 3.1415926535897932384626433832795;
-	}
-
-	template<typename _Tp>
-	inline _Tp todeg(const _Tp& x)
-	{
-  		return x / pi<_Tp>() * ((_Tp)180.);
-	}
-
-	template<typename _Tp>
-	inline _Tp torad(const _Tp& x)
-	{
-	  	return x / ((_Tp)180.) * pi<_Tp>();
-	}
+	public:
+		template<typename Tp>
+		inline static Tp pi();
+		template<typename Tp>
+		inline static Tp todeg(const Tp& x);
+		template<typename Tp>
+		inline static Tp torad(const Tp& x);
+		template<typename Tp>
+		inline static void swap(Tp& a, Tp& b);
+		template<typename Tp>
+		inline static Tp abs(const Tp& x);
+		template<typename Tp>
+		inline static Tp epsilon();
+		template<typename Tp>
+		inline static Tp sqrt(const Tp& x);
+		template<typename Tp>
+		inline static Tp sin(const Tp& x);
+		template<typename Tp>
+		inline static Tp cos(const Tp& x);
+	};
 }
+
+#include <math.impl.hpp>
 
 #endif

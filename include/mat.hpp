@@ -6,13 +6,16 @@
 
 namespace mat
 {
-	template<typename _Tp = scalar_t>
+	typedef MAT_SCALAR_TYPE scalar_t;
+	
+	template<typename Tp = scalar_t, typename U = mathutils>
 	class mat
 	{
+		typedef impl<Tp, U> I;
 	public:
 		mat() : m_cx(0), m_cy(0), m_data(NULL) {}
 
-		mat(_Tp* data, const size_t& cx, const size_t& cy, const bool& transpose = false) : m_cx(0), m_cy(0), m_data(NULL)
+		mat(Tp* data, const size_t& cx, const size_t& cy, const bool& transpose = false) : m_cx(0), m_cy(0), m_data(NULL)
 		{
 			set(data, cx, cy, transpose);
 		}
@@ -20,6 +23,22 @@ namespace mat
 		mat(const mat& m) : m_cx(0), m_cy(0), m_data(NULL)
 		{
 			*this = m;
+		}
+		
+		static mat rot(const Tp& theta)
+		{
+			mat t;
+			t.set(NULL, 2, 2);
+			I::rot(theta);
+			return t;
+		}
+		
+		static mat id(const ssize_t& cx = -1)
+		{
+			mat t;
+			t.set(NULL, cx, cx, false, false);
+			I::id(data(), cx);
+			return t;
 		}
 
 		~mat()
@@ -37,25 +56,25 @@ namespace mat
 			return m_cy;
 		}
 
-                inline const _Tp& at(const size_t& x, const size_t& y) const
-                {
-                        return m_data[y * m_cx + x];
-                }
+		inline const Tp& at(const size_t& x, const size_t& y) const
+		{
+			return m_data[y * m_cx + x];
+		}
 
-                inline _Tp& at(const size_t& x, const size_t& y)
-                {
-                        return m_data[y * m_cx + x];
-                }
+		inline Tp& at(const size_t& x, const size_t& y)
+		{
+			return m_data[y * m_cx + x];
+		}
 
-                inline _Tp* data()
-                {
-                        return m_data;
-                }
+		inline Tp* data()
+		{
+			return m_data;
+		}
 
-                inline const _Tp* data() const
-                {
-                        return m_data;
-                }
+		inline const Tp* data() const
+		{
+			return m_data;
+		}
 
 		mat& operator=(const mat& m)
 		{
@@ -65,14 +84,14 @@ namespace mat
 		mat& operator+=(const mat& x)
 		{
 			assert(cx() == x.cx() && cy() == x.cy());
-			impl::add(data(), m_cx, m_cy, data(), x.data());
+			I::add(data(), m_cx, m_cy, data(), x.data());
 			return *this;
 		}
 
 		mat& operator-=(const mat& x)
 		{
 			assert(cx() == x.cx() && cy() == x.cy());
-			impl::sub(data(), m_cx, m_cy, data(), x.data());
+			I::sub(data(), m_cx, m_cy, data(), x.data());
 			return *this;
 		}
 
@@ -93,7 +112,7 @@ namespace mat
 		}
 
 		//m*x
-		mat operator*(const _Tp& x) const
+		mat operator*(const Tp& x) const
 		{
 			mat t(*this);
 			t *= x;
@@ -101,9 +120,9 @@ namespace mat
 		}
 
 		//m*=x
-		mat& operator*=(const _Tp& x)
+		mat& operator*=(const Tp& x)
 		{
-			impl::smul(data(), m_cx, m_cy, data(), x);
+			I::smul(data(), m_cx, m_cy, data(), x);
 			return *this;
 		}
 
@@ -114,7 +133,7 @@ namespace mat
 			assert(cx() == x.cy());
 			mat t;
 			t.set(NULL, x.cx(), cy());
-			impl::mul(t.data(), data(), cx(), cy(), x.data(), x.cx(), x.cy());
+			I::mul(t.data(), data(), cx(), cy(), x.data(), x.cx(), x.cy());
 			return t;
 		}
 
@@ -126,7 +145,7 @@ namespace mat
 			assert(cx() == x.cx());
 			mat t;
 			t.set(NULL, x.cx(), cy());
-			impl::div(t.data(), data(), cx(), cy(), x.data(), x.cx());
+			I::div(t.data(), data(), cx(), cy(), x.data(), x.cx());
 			return t;
 		}
 
@@ -145,7 +164,7 @@ namespace mat
 			if(cx() != cy())
 				return t;
 			t.set(NULL, cx(), cy(), false, false);
-			if (!impl::cholesky(t.data(), cx(), data()))
+			if (!I::cholesky(t.data(), cx(), data()))
 				t.set(NULL, 0, 0);
 			return t;
 		}
@@ -159,7 +178,7 @@ namespace mat
 			if (cx() != cy())
 				return t;
 			t.set(NULL, cx(), cx());
-			if (!impl::inv(t.data(), cx(), cx(), data()))
+			if (!I::inv(t.data(), cx(), cx(), data()))
 				t.set(NULL, 0, 0);
 			return t;
 		}
@@ -169,7 +188,7 @@ namespace mat
 			return set(NULL, cx, cx, false, true);
 		}
 
-		mat& set(const _Tp* d, const size_t& cx, const size_t& cy, const bool& transpose = false, const bool& zero = false)
+		mat& set(const Tp* d, const size_t& cx, const size_t& cy, const bool& transpose = false, const bool& zero = false)
 		{
 			if (cx * cy != mat::cx() * mat::cy()) {
 				if (m_data)
@@ -179,42 +198,34 @@ namespace mat
 				m_data = NULL;
 				if (cx == 0 || cy == 0)
 					return *this;
-				m_data = new _Tp[cx * cy];
+				m_data = new Tp[cx * cy];
 			}
 			if (d) {
 				if (transpose)
-					impl::trans(data(), cx, cy, d);
+					I::trans(data(), cx, cy, d);
 				else
-					impl::cpy(data(), cx, cy, d);
+					I::cpy(data(), cx, cy, d);
 			} else {
 				if(zero)
-					impl::zero(data(), cx, cy);
+					I::zero(data(), cx, cy);
 			}
 			return *this;
 		}
 
-		mat& id(const ssize_t& cx = -1)
-		{
-			if(cx < 0)
-				set(NULL, cx, cx, false, false);
-			impl::id(data(), cx);
-			return *this;
-		}
-
-		_Tp dot(const mat& x) const
+		Tp dot(const mat& x) const
 		{
 			assert(cx() == x.cx());
 			assert(cy() == 1 && x.cy() == 1);
-			_Tp s = 0;
+			Tp s = 0;
 			for (size_t i = 0; i < cx(); i++)
 				s += m_data[i] * x.m_data[i];
 			return s;
 		}
 
-		_Tp len() const
+		Tp len() const
 		{
 			assert(cy() == 1);
-			return impl::sqrt(dot(*this));
+			return I::sqrt(dot(*this));
 		}
 
 		mat normal() const
@@ -230,45 +241,22 @@ namespace mat
 		}
 	private:
 		size_t m_cx, m_cy;
-		_Tp* m_data;
+		Tp* m_data;
 	};
-	
-	template<typename _Tp>
-	mat<_Tp> e(const size_t& x)
-	{
-		mat<_Tp> t;
-		t.id(x);
-		return t;
-	}
-	
-	template<typename _Tp>
-	mat<_Tp> rot(const _Tp& theta)
-	{
-		mat<_Tp> t;
-		_Tp n[4] = {impl::cos(theta), -impl::sin(theta), impl::sin(theta), impl::cos(theta)};
-		t.set(n, 2, 2);
-		return t;
-	}
-	
-	template<typename _Tp>
-	void print(const mat<_Tp>& m)
-	{
-		impl::print(m.data(), m.cx(), m.cy());
-	}
 }
 
 //1-m
-template<typename _Tp>
-mat::mat<_Tp>& operator-(const int& x, const mat::mat<_Tp>& m)
+template<typename Tp, typename U>
+mat::mat<Tp, U>& operator-(const int& x, const mat::mat<Tp, U>& m)
 {
-	mat::mat<_Tp> t;
+	mat::mat<Tp, U> t;
 	t.id() -= m;
 	return t;
 }
 
 //x*m
-template<typename _Tp>
-mat::mat<_Tp> operator*(const _Tp& x, const mat::mat<_Tp>& m)
+template<typename Tp, typename U>
+mat::mat<Tp, U> operator*(const Tp& x, const mat::mat<Tp, U>& m)
 {
 	return m * x;
 }
