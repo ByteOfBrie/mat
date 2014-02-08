@@ -3,7 +3,6 @@
 
 #include <math.hpp>
 #include <impl.hpp>
-#include <vec.hpp>
 
 namespace matrix
 {
