@@ -11,27 +11,71 @@ namespace mat
 	{
 	public:
 		mat() : m_cx(0), m_cy(0), m_data(NULL) {}
-		mat(_Tp* data, const size_t& cx, const size_t& cy, const bool& transpose = false) : m_cx(0), m_cy(0), m_data(NULL) {set(data, cx, cy, transpose);}
-		mat(const mat& m) : m_cx(0), m_cy(0), m_data(NULL) {*this = m;}
-		~mat() {set(NULL, 0, 0,false);}
-		const size_t& cx() const {return m_cx;}
-		const size_t& cy() const {return m_cy;}
+
+		mat(_Tp* data, const size_t& cx, const size_t& cy, const bool& transpose = false) : m_cx(0), m_cy(0), m_data(NULL)
+		{
+			set(data, cx, cy, transpose);
+		}
+
+		mat(const mat& m) : m_cx(0), m_cy(0), m_data(NULL)
+		{
+			*this = m;
+		}
+
+		~mat()
+		{
+			set(NULL, 0, 0,false);
+		}
+
+		inline const size_t& cx() const
+		{
+			return m_cx;
+		}
+
+		inline const size_t& cy() const
+		{
+			return m_cy;
+		}
+
+                inline const _Tp& at(const size_t& x, const size_t& y) const
+                {
+                        return m_data[y * m_cx + x];
+                }
+
+                inline _Tp& at(const size_t& x, const size_t& y)
+                {
+                        return m_data[y * m_cx + x];
+                }
+
+                inline _Tp* data()
+                {
+                        return m_data;
+                }
+
+                inline const _Tp* data() const
+                {
+                        return m_data;
+                }
+
 		mat& operator=(const mat& m)
 		{
 			return set(m.data(), m.cx(), m.cy());
 		}
+
 		mat& operator+=(const mat& x)
 		{
 			assert(cx() == x.cx() && cy() == x.cy());
 			impl::add(data(), m_cx, m_cy, data(), x.data());
 			return *this;
 		}
+
 		mat& operator-=(const mat& x)
 		{
-			//assert(cx() == x.cx() && cy() == x.cy());
+			assert(cx() == x.cx() && cy() == x.cy());
 			impl::sub(data(), m_cx, m_cy, data(), x.data());
 			return *this;
 		}
+
 		//m+m;
 		mat operator+(const mat& x)
 		{
@@ -39,6 +83,7 @@ namespace mat
 			t += *this;
 			return t;
 		}
+
 		//m-m;
 		mat operator-(const mat& x) const
 		{
@@ -46,6 +91,7 @@ namespace mat
 			t -= *this;
 			return t;
 		}
+
 		//m*x
 		mat operator*(const _Tp& x) const
 		{
@@ -53,12 +99,14 @@ namespace mat
 			t *= x;
 			return t;
 		}
+
 		//m*=x
 		mat& operator*=(const _Tp& x)
 		{
 			impl::smul(data(), m_cx, m_cy, data(), x);
 			return *this;
 		}
+
 		//m*m;
 		mat operator*(const mat& x) const
 		{
@@ -69,6 +117,7 @@ namespace mat
 			impl::mul(t.data(), data(), cx(), cy(), x.data(), x.cx(), x.cy());
 			return t;
 		}
+
 		//m/m;
 		mat operator/(const mat& x) const
 		{
@@ -80,64 +129,78 @@ namespace mat
 			impl::div(t.data(), data(), cx(), cy(), x.data(), x.cx());
 			return t;
 		}
+
 		//m^1;
 		mat operator^(const int& dummy) const
 		{
 			mat t;
-			t.set(data(), m_cx, m_cy, true);
+			t.set(data(), cx(), cy(), true);
 			return t;
 		}
+
+		mat cholesky() const
+		{
+			//assert(cx() == cy());
+			mat t;
+			if(cx() != cy())
+				return t;
+			t.set(NULL, cx(), cy(), false, false);
+			if (!impl::cholesky(t.data(), cx(), data()))
+				t.set(NULL, 0, 0);
+			return t;
+		}
+
 		//invert
 		mat operator!() const
 		{
 			//x must be square
-			assert(cx() == cy());
+			//assert(cx() == cy());
 			mat t;
+			if (cx() != cy())
+				return t;
 			t.set(NULL, cx(), cx());
-			inv(t.data(), cx(), cx(), data());
+			if (!impl::inv(t.data(), cx(), cx(), data()))
+				t.set(NULL, 0, 0);
 			return t;
 		}
-		mat& set(const _Tp* d, const size_t& cx, const size_t& cy, const bool& transpose = false)
+
+		inline mat& zero(const ssize_t& cx = -1)
 		{
-			if (m_data)
-				delete[] m_data;
-			m_cx = 0;
-			m_cy = 0;
-			m_data = NULL;
-			if (cx == 0 || cy == 0)
-				return *this;
-			m_data = new _Tp[cx * cy]();
-			if (transpose) {
-				m_cx = cy;
-				m_cy = cx;
-				if (d)
+			return set(NULL, cx, cx, false, true);
+		}
+
+		mat& set(const _Tp* d, const size_t& cx, const size_t& cy, const bool& transpose = false, const bool& zero = false)
+		{
+			if (cx * cy != mat::cx() * mat::cy()) {
+				if (m_data)
+					delete[] m_data;
+				m_cx = transpose ? cy : cx;
+				m_cy = transpose ? cx : cy;
+				m_data = NULL;
+				if (cx == 0 || cy == 0)
+					return *this;
+				m_data = new _Tp[cx * cy];
+			}
+			if (d) {
+				if (transpose)
 					impl::trans(data(), cx, cy, d);
-			} else {
-				m_cx = cx;
-				m_cy = cy;
-				if (d)
+				else
 					impl::cpy(data(), cx, cy, d);
+			} else {
+				if(zero)
+					impl::zero(data(), cx, cy);
 			}
 			return *this;
 		}
-		mat& id(const size_t& cx)
+
+		mat& id(const ssize_t& cx = -1)
 		{
-			if (cx == 0)
-				set(NULL, 0, 0);
-			m_cx = cx;
-			m_cy = cx;
-			m_data = new _Tp[cx * cx];
+			if(cx < 0)
+				set(NULL, cx, cx, false, false);
 			impl::id(data(), cx);
 			return *this;
 		}
-		inline const _Tp& at(const size_t& x, const size_t& y) const
-		{
-			return m_data[y * m_cx + x];
-		}
-		inline _Tp& at(const size_t& x, const size_t& y)
-		{
-			return m_data[y * m_cx + x];
-		}
+
 		_Tp dot(const mat& x) const
 		{
 			assert(cx() == x.cx());
@@ -147,30 +210,24 @@ namespace mat
 				s += m_data[i] * x.m_data[i];
 			return s;
 		}
+
 		_Tp len() const
 		{
 			assert(cy() == 1);
 			return impl::sqrt(dot(*this));
 		}
+
 		mat normal() const
 		{
 			mat t(*this);
 			t *= 1. / t.len();
 			return t;
 		}
+
 		mat& normalize()
 		{
 			return *this *= 1. / len();
 		}
-		inline _Tp* data()
-		{
-			return m_data;
-		}
-		inline const _Tp* data() const
-		{
-			return m_data;
-		}
-		//todo: debug output functions
 	private:
 		size_t m_cx, m_cy;
 		_Tp* m_data;
