@@ -64,7 +64,8 @@ int main(int argc, char** argv)
 	cout << (t^-1) << endl;
 	cout << "c" << endl;
 	cout << (t^T) << endl;
-	cout << "t*t^-1" << (t * (t ^ -1)) << endl;
+	cout << "t*t^-1" << endl;
+	cout << (t * (t ^ -1)) << endl;
 	cout << "c*c^t" << endl;
 	cout << t.cholesky() * (t.cholesky()^T) << std::endl;
 	return 0;
