@@ -7,8 +7,8 @@
 //  copy or use the software.
 //
 //
-//                           License Agreement
-//                For Open Source Computer Vision Library
+//			     License Agreement
+//		  For Open Source Computer Vision Library
 //
 // Copyright (C) 2000-2008, Intel Corporation, all rights reserved.
 // Copyright (C) 2009, Willow Garage Inc., all rights reserved.
@@ -96,12 +96,12 @@ namespace mat
 
 			if (b) {
 				for (i = m - 1; i >= 0; i--)
-			    		for (j = 0; j < n; j++) {
+					for (j = 0; j < n; j++) {
 						_Tp s = b[i * bstep + j];
 						for (k = i + 1; k < m; k++)
 							s -= A[ i *astep + k] * b[k * bstep + j];
 						b[i * bstep + j] = s * A[i * astep + i];
-			    		}
+					}
 			}
 
 			return p;
@@ -130,26 +130,26 @@ namespace mat
 				}
 				if (s < mat::impl::compat::numeric_limits<_Tp>::epsilon())
 					return false;
-				L[i * astep + i] = (_Tp)(1. / mat::sqrt<_Tp>(s));
+				L[i * astep + i] = (_Tp)(1. / mat::impl::sqrt<_Tp>(s));
 			}
 			
 			if (!b)
 				return true;
-			
+
 			// LLt x = b
 			// 1: L y = b
 			// 2. Lt x = y
 			
 			/*
-			[ L00             ]  y0   b0
-			[ L10 L11         ]  y1 = b1
-			[ L20 L21 L22     ]  y2   b2
+			[ L00		  ]  y0   b0
+			[ L10 L11	  ]  y1 = b1
+			[ L20 L21 L22	  ]  y2   b2
 			[ L30 L31 L32 L33 ]  y3   b3
 			
 			[ L00 L10 L20 L30 ]  x0   y0
 			[     L11 L21 L31 ]  x1 = y1
-			[         L22 L32 ]  x2   y2
-			[             L33 ]  x3   y3
+			[	  L22 L32 ]  x2   y2
+			[	      L33 ]  x3   y3
 			*/
 			
 			for (i = 0; i < m; i++) {

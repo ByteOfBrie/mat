@@ -6,7 +6,7 @@
 
 int main(int argc, char** argv)
 {
-	using namespace mat::impl;
+/*	using namespace mat::impl;
 	float a[N*N] = {
 		0.60, 1.20, 1.40, 1.00, 0.60, 1.00, 1.20, 0.40, 1.80, 0.20,
 		0.40, 1.40, 0.00, 1.80, 0.60, 1.20, 0.00, 1.20, 0.40, 1.20,
@@ -46,5 +46,14 @@ int main(int argc, char** argv)
 	mat::mat<> t(a, N, N);
 	mat::print(t);
 	mat::print(t / t);
+	mat::print(t.cholskey());*/
+	float a[] = {25, 15, -5,
+		     15, 18, 0,
+		     -5, 0, 11,
+		    };
+	mat::mat<> t(a, 3, 3);
+	mat::print(t.cholesky() * (t.cholesky()^1));
+	float z = sqrt(-1);
+	printf("%i\n", z==z);
 	return 0;
 }

@@ -40,8 +40,8 @@ namespace mat
 		///results BNxAM
 		///multiply (A)(B^-1)
 		template<typename _Tp>
-		_Tp* div(_Tp* dest, const _Tp* A, size_t AN, size_t AM, const _Tp* B, size_t BN);
-		
+		_Tp* div(_Tp* dest, const _Tp* A, size_t AN, size_t AM, const _Tp* B, size_t BN);		
+
 		///Multiply matrix by a scalar
 		template<typename _Tp>
 		_Tp* smul(_Tp* dest, size_t N, size_t M, const _Tp* src, const _Tp& C);
@@ -51,21 +51,32 @@ namespace mat
 		///component-wise subtract two matricies 
 		template<typename _Tp>
 		_Tp* sub(_Tp* dest, size_t N, size_t M, const _Tp* A, const _Tp* B);
+
 		///transpose a matrix
 		template<typename _Tp>
 		_Tp* trans(_Tp* dest, size_t N, size_t M, const _Tp* src);
 		///set a matrix to identity
 		template<typename _Tp>
 		_Tp* id(_Tp* dest, size_t N);
+		///set a matrix to zero
+		template<typename _Tp>
+		_Tp* zero(_Tp* dest, size_t N, size_t M);
 		///copy a matrix
 		template<typename _Tp>
 		_Tp* cpy(_Tp* dest, size_t N, size_t M, const _Tp* src);
+
 		///find inverse matrix
 		template<typename _Tp>
 		_Tp* inv(_Tp* dest, size_t N, const _Tp* src);
+		///preform cholskey decomposition on matrix src
+		///(dest)*(dest^T) = src
+		template<typename _Tp>
+		_Tp* cholesky(_Tp*dest, size_t N, const _Tp* src);
+
 		///find the determinant of a matrix
 		template<typename _Tp>
 		_Tp det(const _Tp* src, size_t N);
+
 		///utility function to print a matrix cell (debug)
 		template<typename _Tp>
 		void printt(const _Tp& f);
@@ -242,6 +253,15 @@ namespace mat
 		}
 
 		template<typename _Tp>
+		_Tp* zero(_Tp* dest, size_t N, size_t M)
+		{
+			size_t i;
+			for (i = 0; i < N * M; i++)
+				dest[i] = 0;
+			return dest;
+		}
+
+		template<typename _Tp>
 		_Tp* cpy(_Tp* dest, size_t N, size_t M, const _Tp* src)
 		{
 			size_t i;
@@ -262,6 +282,28 @@ namespace mat
 			cpy(tmp, N, N, src);
 			if (!LUImpl(tmp, N * sizeof(_Tp), N, dest, N * sizeof(_Tp), N))
 				return NULL;
+			return dest;
+		}
+
+		template<typename _Tp>
+		_Tp* cholesky(_Tp* dest, size_t N, const _Tp* src)
+		{
+			size_t x, y, k;
+			if (!src)
+				return NULL;
+			for (y = 0; y < N; y++) {
+				for (x = 0; x < y + 1; x++) {
+					_Tp s = 0;
+					for (k = 0; k < x; k++)
+						s += dest[y * N + k] * dest[x * N + k];
+					if (y == x)
+						dest[y * N + x] = impl::sqrt<_Tp>(src[y * N + y] - s);
+					else
+						dest[y * N + x] = 1. / dest[x * N + x] * (src[y * N + x] - s);
+					if(dest[y * N + x] != dest[y * N + x])
+						return NULL;
+				}
+			}
 			return dest;
 		}
 
