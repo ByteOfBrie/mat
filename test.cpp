@@ -47,13 +47,13 @@ int main(int argc, char** argv)
 	mat::print(t);
 	mat::print(t / t);
 	mat::print(t.cholskey());*/
-	float a[] = {25, 15, -5,
+/*	float a[] = {25, 15, -5,
 		     15, 18, 0,
 		     -5, 0, 11,
 		    };
 	mat::mat<> t(a, 3, 3);
 	mat::print(t.cholesky() * (t.cholesky()^1));
 	float z = sqrt(-1);
-	printf("%i\n", z==z);
+	printf("%i\n", z==z);*/
 	return 0;
 }
