@@ -17,13 +17,10 @@ Example:
 
 TODO:
 
-Create a nice interface [ 5/10 ]
+Create a nice interface [ 6/10 ]
 
-Seperate defs and impl [ 7/10 ]
+Seperate defs and impl [ 9/10 ]
 
 Document usage [ 3/10 ]
 
 Transposed multiply [ 3/10 ]
-
-Template arguments to replace config.hpp [ 0/10 ]
-

@@ -1,7 +1,9 @@
 #ifndef MATH_HPP
 #define MATH_HPP
 
-namespace mat
+#include <config.hpp>
+
+namespace matrix
 {
 	class mathutils
 	{
@@ -17,7 +19,7 @@ namespace mat
 		template<typename Tp>
 		inline static Tp abs(const Tp& x);
 		template<typename Tp>
-		inline static Tp epsilon();
+		inline static Tp epsilon(const Tp& dumb);
 		template<typename Tp>
 		inline static Tp sqrt(const Tp& x);
 		template<typename Tp>

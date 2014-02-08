@@ -1,6 +1,8 @@
 #ifndef MAT_CONFIG_HPP
 #define MAT_CONFIG_HPP
 
+/*for size_t*/
+#include <stddef.h>
 /*may need to replace with correct alloca header*/
 #include <alloca.h>
 #include <assert.h>

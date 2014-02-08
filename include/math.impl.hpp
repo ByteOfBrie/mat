@@ -6,7 +6,8 @@
 # include <float.h>
 #endif
 
-namespace mat{
+namespace matrix
+{
 	template<>
 	inline float mathutils::pi<float>()
 	{
@@ -51,13 +52,13 @@ namespace mat{
 #ifndef MAT_IMPL_NO_MATH
 
 	template<>
-	inline float mathutils::epsilon<float>()
+	inline float mathutils::epsilon(const float& dumb)
 	{
 		return FLT_EPSILON;
 	}
 	
 	template<>
-	inline double mathutils::epsilon<double>()
+	inline double mathutils::epsilon(const double& dumb)
 	{
 		return DBL_EPSILON;
 	}

@@ -46,14 +46,10 @@
 #ifndef SOLVER_H
 #define SOLVER_H
 
-#include <compat.hpp>
-
 template<typename Tp, typename M>
-int mat::impl<Tp, M>::LUImpl(Tp* A, size_t astep, int m, Tp* b, size_t bstep, int n)
+int matrix::impl<Tp, M>::LUImpl(Tp* A, unsigned int astep, int m, Tp* b, unsigned int bstep, int n)
 {
 	int i, j, k, p = 1;
-	astep /= sizeof(A[0]);
-	bstep /= sizeof(b[0]);
 
 	for (i = 0; i < m; i++) {
 		k = i;
@@ -61,11 +57,8 @@ int mat::impl<Tp, M>::LUImpl(Tp* A, size_t astep, int m, Tp* b, size_t bstep, in
 		for (j = i + 1; j < m; j++ )
 			if (M::abs(A[j * astep + i]) > M::abs(A[k * astep + i]) )
 				k = j;
-			
-			M::swap(i, j);
-		M::epsilon();
 
-		if (M::abs(A[k * astep + i]) < M::epsilon())
+		if (M::abs(A[k * astep + i]) < M::epsilon(A[0]))
 			return 0;
 
 		if (k != i) {
@@ -107,13 +100,11 @@ int mat::impl<Tp, M>::LUImpl(Tp* A, size_t astep, int m, Tp* b, size_t bstep, in
 }
 
 template<typename Tp, typename M> bool
-mat::impl<Tp, M>::CholImpl(Tp* A, size_t astep, int m, Tp* b, size_t bstep, int n)
+matrix::impl<Tp, M>::CholImpl(Tp* A, unsigned int astep, int m, Tp* b, unsigned int bstep, int n)
 {
 	Tp* L = A;
 	int i, j, k;
 	double s;
-	astep /= sizeof(A[0]);
-	bstep /= sizeof(b[0]);
 	
 	for (i = 0; i < m; i++) {
 		for (j = 0; j < i; j++) {
@@ -127,7 +118,7 @@ mat::impl<Tp, M>::CholImpl(Tp* A, size_t astep, int m, Tp* b, size_t bstep, int 
 			double t = L[i * astep + k];
 			s -= t * t;
 		}
-		if (s < M::epsilon())
+		if (s < M::epsilon(s))
 			return false;
 		L[i * astep + i] = (Tp)(1. / M::sqrt(s));
 	}
